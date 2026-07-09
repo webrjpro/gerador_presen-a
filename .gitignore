@@ -1,0 +1,13 @@
+**/.git/
+**/__pycache__/
+**/*.pyc
+sistema_calend/
+organizadorzip_compactador-main/.github/
+organizadorzip_compactador-main/.vscode/
+organizadorzip_compactador-main/tests/
+organizadorzip_compactador-main/package.json
+organizadorzip_compactador-main/playwright.config.mjs
+organizadorzip_compactador-main/zipadorpiquet/
+organizadorzip_compactador-main/zipadorpiquet/build/
+organizadorzip_compactador-main/zipadorpiquet/instalador/
+organizadorzip_compactador-main/zipadorpiquet/*.exe

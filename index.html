@@ -3,366 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gerador CSV Moodle Presença</title>
-  <link rel="stylesheet" href="styles.css?v=20260709-pdf-modulo">
-  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <meta name="author" content="Carlos Antonio de Oliveira Piquet">
+  <title>Suite Acadêmica Piquet</title>
+  <link rel="stylesheet" href="suite.css?v=20260709-suite">
   <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
-  <script defer src="app.js?v=20260709-pdf-modulo"></script>
+  <script defer src="suite.js?v=20260709-suite"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <h1>Gerador CSV Moodle Presença</h1>
-      <p id="statusText">Aguardando planilha</p>
-    </div>
-    <div class="top-actions">
-      <button type="button" class="btn secondary" id="exportSelectedPdfBtn" disabled title="Exportar módulos selecionados em PDF">
-        <i data-lucide="file-stack"></i>
-        <span>PDF selecionados</span>
-      </button>
-      <button type="button" class="btn primary" id="generateZipBtn" disabled title="Gerar ZIP">
-        <i data-lucide="archive"></i>
-        <span>Gerar ZIP</span>
-      </button>
-    </div>
-  </header>
-
-  <main class="app-shell">
-    <aside class="panel controls">
-      <form id="settingsForm">
-        <section class="control-section">
-          <h2>Arquivo</h2>
-          <div class="file-actions">
-            <button type="button" class="btn secondary" id="loadDefaultBtn" title="Carregar planilha padrão">
-              <i data-lucide="file-spreadsheet"></i>
-              <span>Planilha padrão</span>
-            </button>
-            <label class="btn secondary file-label" title="Escolher arquivo Excel">
-              <i data-lucide="folder-open"></i>
-              <span>Escolher arquivo</span>
-              <input id="fileInput" type="file" accept=".xlsx,.xls,.xlsm" hidden>
-            </label>
-          </div>
-          <div class="drop-zone" id="dropZone">
-            <i data-lucide="upload-cloud"></i>
-            <strong>Arraste a planilha aqui para gerar o ZIP</strong>
-            <span>XLSX, XLS ou XLSM</span>
-          </div>
-          <label class="check-row">
-            <input id="autoZipInput" type="checkbox" checked>
-            <span>Gerar ZIP automaticamente ao carregar</span>
-          </label>
-          <div class="file-name" id="fileName">Nenhum arquivo carregado</div>
-        </section>
-
-        <section class="control-section">
-          <h2>Planilha</h2>
-          <label>
-            <span>Aba de presença</span>
-            <select id="attendanceSheetSelect"></select>
-          </label>
-          <label>
-            <span>Aba de alunos</span>
-            <select id="rosterSheetSelect"></select>
-          </label>
-          <div class="settings-grid">
-            <label>
-              <span>Módulos</span>
-              <input id="moduleRowInput" type="number" min="1" value="6">
-            </label>
-            <label>
-              <span>Datas</span>
-              <input id="dateRowInput" type="number" min="1" value="7">
-            </label>
-            <label>
-              <span>Alunos</span>
-              <input id="firstStudentRowInput" type="number" min="1" value="8">
-            </label>
-            <label>
-              <span>Colunas</span>
-              <input id="maxColumnsInput" type="number" min="20" value="240">
-            </label>
-          </div>
-          <div class="settings-grid">
-            <label>
-              <span>Nome</span>
-              <input id="nameColInput" type="number" min="1" value="2">
-            </label>
-            <label>
-              <span>Matrícula</span>
-              <input id="registrationColInput" type="number" min="1" value="1">
-            </label>
-            <label>
-              <span>Admissão</span>
-              <input id="admissionColInput" type="number" min="1" value="3">
-            </label>
-            <label>
-              <span>Deslig.</span>
-              <input id="leaveColInput" type="number" min="1" value="4">
-            </label>
-            <label>
-              <span>Obs.</span>
-              <input id="observationColInput" type="number" min="1" value="179">
-            </label>
-          </div>
-        </section>
-
-        <section class="control-section">
-          <h2>Moodle</h2>
-          <label>
-            <span>Identificador</span>
-            <select id="identifierFieldSelect">
-              <option value="idnumber" selected>idnumber</option>
-              <option value="email">email</option>
-              <option value="username">username</option>
-            </select>
-          </label>
-          <div class="settings-grid status-grid">
-            <label>
-              <span>0</span>
-              <input id="presentStatusInput" type="text" value="Pr">
-            </label>
-            <label>
-              <span>1</span>
-              <input id="absentStatusInput" type="text" value="Au">
-            </label>
-            <label>
-              <span>Atraso</span>
-              <input id="lateStatusInput" type="text" value="At">
-            </label>
-            <label>
-              <span>Especial</span>
-              <input id="specialStatusInput" type="text" value="Di">
-            </label>
-          </div>
-          <label class="check-row">
-            <input id="specialAsExcusedInput" type="checkbox" checked>
-            <span>Textos especiais como dispensa</span>
-          </label>
-          <label class="check-row">
-            <input id="blankAsPresentInput" type="checkbox" checked>
-            <span>Célula vazia como presença</span>
-          </label>
-          <label>
-            <span>Observações</span>
-            <select id="remarksModeSelect">
-              <option value="date" selected>Da data</option>
-              <option value="full">Completa</option>
-              <option value="none">Nenhuma</option>
-            </select>
-          </label>
-          <div class="settings-grid">
-            <label>
-              <span>Delimitador</span>
-              <select id="delimiterSelect">
-                <option value="," selected>,</option>
-                <option value=";">;</option>
-              </select>
-            </label>
-            <label>
-              <span>Ano inicial</span>
-              <input id="initialYearInput" type="number" min="2000" value="2024">
-            </label>
-          </div>
-          <div class="settings-grid">
-            <label>
-              <span>Aula 1 início</span>
-              <input id="sessionStartInput" type="time" value="13:40">
-            </label>
-            <label>
-              <span>Aula 1 fim</span>
-              <input id="sessionEndInput" type="time" value="16:10">
-            </label>
-          </div>
-          <div class="settings-grid">
-            <label>
-              <span>Aula 2 início</span>
-              <input id="session2StartInput" type="time" value="16:30">
-            </label>
-            <label>
-              <span>Aula 2 fim</span>
-              <input id="session2EndInput" type="time" value="19:00">
-            </label>
-          </div>
-          <div class="settings-grid">
-            <label>
-              <span>Aula 3+ início</span>
-              <input id="session3StartInput" type="time" value="19:10">
-            </label>
-            <label>
-              <span>Aula 3+ fim</span>
-              <input id="session3EndInput" type="time" value="21:40">
-            </label>
-          </div>
-          <label>
-            <span>Curso</span>
-            <input id="courseShortnameInput" type="text" placeholder="shortname">
-          </label>
-          <label>
-            <span>Grupo</span>
-            <input id="groupNameInput" type="text" placeholder="opcional">
-          </label>
-        </section>
-
-        <section class="control-section">
-          <h2>Ações</h2>
-          <div class="file-actions">
-            <button type="button" class="btn secondary" id="reanalyzeBtn" disabled title="Reanalisar">
-              <i data-lucide="refresh-cw"></i>
-              <span>Reanalisar</span>
-            </button>
-            <button type="button" class="btn secondary" id="detectLayoutBtn" disabled title="Detectar layout">
-              <i data-lucide="scan-search"></i>
-              <span>Detectar</span>
-            </button>
-            <button type="button" class="btn secondary" id="downloadSessionBtn" disabled title="Baixar sessão selecionada">
-              <i data-lucide="download"></i>
-              <span>CSV sessão</span>
-            </button>
-          </div>
-        </section>
-      </form>
-    </aside>
-
-    <section class="workspace">
-      <section class="metrics" aria-label="Resumo">
-        <div class="metric">
-          <span>Módulos</span>
-          <strong id="moduleCount">0</strong>
-        </div>
-        <div class="metric">
-          <span>Sessões</span>
-          <strong id="sessionCount">0</strong>
-        </div>
-        <div class="metric">
-          <span>Alunos</span>
-          <strong id="studentCount">0</strong>
-        </div>
-        <div class="metric warning">
-          <span>Avisos</span>
-          <strong id="warningCount">0</strong>
-        </div>
-      </section>
-
-      <section class="panel command-panel">
+  <div class="suite-shell">
+    <header class="suite-topbar">
+      <div class="suite-brand">
+        <div class="brand-mark" aria-hidden="true">SP</div>
         <div>
-          <span class="panel-kicker">Módulo ativo</span>
-          <strong id="activeModuleTitle">Nenhum módulo selecionado</strong>
-          <span id="activeModuleMeta">Carregue uma planilha para começar</span>
+          <h1>Suite Acadêmica Piquet</h1>
+          <p id="suiteStatus">Presença Moodle carregada</p>
         </div>
-        <div class="command-stats" aria-label="Resumo do módulo ativo">
-          <span><strong id="activeSessionTotal">0</strong> sessões</span>
-          <span><strong id="activeRecordTotal">0</strong> registros</span>
-          <span><strong id="activeAbsentTotal">0</strong> faltas</span>
-          <span><strong id="activeSpecialTotal">0</strong> dispensas</span>
+      </div>
+      <div class="suite-actions">
+        <button type="button" class="suite-btn ghost" id="reloadToolBtn" title="Recarregar ferramenta">
+          <i data-lucide="refresh-cw"></i>
+          <span>Recarregar</span>
+        </button>
+        <button type="button" class="suite-btn primary" id="openToolBtn" title="Abrir ferramenta em nova aba">
+          <i data-lucide="external-link"></i>
+          <span>Abrir</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="suite-layout">
+      <aside class="suite-sidebar" aria-label="Ferramentas">
+        <label class="tool-search">
+          <i data-lucide="search"></i>
+          <input id="toolSearchInput" type="search" placeholder="Buscar ferramenta">
+        </label>
+
+        <nav class="tool-nav" id="toolNav">
+          <button type="button" class="tool-item active" data-tool="presenca" data-keywords="presenca moodle chamada csv pdf aula modulo notas frequencia">
+            <i data-lucide="clipboard-check"></i>
+            <span>Presença Moodle</span>
+            <small>CSV, ZIP e PDF</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="calendario" data-keywords="calendario feriados modulo carga horaria pdf tabela">
+            <i data-lucide="calendar-days"></i>
+            <span>Calendário</span>
+            <small>Agenda acadêmica</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="organizador" data-keywords="organizador zip compactador alunos documentos moodle relatorio logs">
+            <i data-lucide="archive"></i>
+            <span>Organizador</span>
+            <small>ZIP e conversores</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="qr" data-keywords="qr qrcode pdf extrair inserir lote mesclar">
+            <i data-lucide="qr-code"></i>
+            <span>QR em PDF</span>
+            <small>Lote e extração</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="qr-mescla" data-keywords="qr qrcode mescla merge pdf lote certificado">
+            <i data-lucide="scan-line"></i>
+            <span>Mescla QR</span>
+            <small>Variação em lote</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="escala" data-keywords="escala presenca rh frequencia relatorios agenda equipe">
+            <i data-lucide="users-round"></i>
+            <span>Escala e RH</span>
+            <small>Frequência interna</small>
+          </button>
+          <button type="button" class="tool-item" data-tool="agenda" data-keywords="agenda eventos calendario lista lembrete">
+            <i data-lucide="notebook-tabs"></i>
+            <span>Agenda</span>
+            <small>Eventos locais</small>
+          </button>
+        </nav>
+        <div class="tool-empty" id="toolEmpty" hidden>Nenhuma ferramenta encontrada</div>
+      </aside>
+
+      <section class="tool-stage">
+        <div class="stage-head">
+          <div>
+            <span class="stage-kicker" id="activeToolGroup">Operação acadêmica</span>
+            <h2 id="activeToolTitle">Presença Moodle</h2>
+          </div>
+          <div class="stage-pills" aria-label="Resumo da ferramenta ativa">
+            <span id="activeToolMode">Ferramenta local</span>
+            <span id="activeToolPrivacy">Dados no navegador</span>
+          </div>
+        </div>
+
+        <div class="frame-shell">
+          <iframe id="toolFrame" title="Ferramenta ativa" src="presenca.html" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
         </div>
       </section>
-
-      <section class="panel table-panel">
-        <div class="section-head">
-          <h2>Módulos</h2>
-          <div class="segmented">
-            <button type="button" id="selectAllModulesBtn">Todos</button>
-            <button type="button" id="clearModulesBtn">Limpar</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th class="check-cell"></th>
-                <th>Módulo</th>
-                <th>Sessões</th>
-                <th>Registros</th>
-                <th>At</th>
-                <th>Faltas</th>
-                <th>Disp.</th>
-              </tr>
-            </thead>
-            <tbody id="modulesTbody">
-              <tr><td colspan="7" class="empty-state">Sem dados</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="split">
-        <section class="panel table-panel">
-          <div class="section-head">
-            <h2>Sessões</h2>
-            <div class="section-tools">
-              <label class="search-field" title="Filtrar sessões">
-                <i data-lucide="search"></i>
-                <input id="sessionSearchInput" type="search" placeholder="Filtrar sessões">
-              </label>
-              <button type="button" class="btn secondary small" id="downloadModulePdfBtn" disabled title="Exportar prévia das sessões do módulo">
-                <i data-lucide="file-down"></i>
-                <span>PDF módulo</span>
-              </button>
-            </div>
-          </div>
-          <div class="table-wrap compact-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Aula</th>
-                  <th>CSV</th>
-                  <th>Pr</th>
-                  <th>At</th>
-                  <th>Di</th>
-                  <th>Au</th>
-                </tr>
-              </thead>
-              <tbody id="sessionsTbody">
-                <tr><td colspan="7" class="empty-state">Sem módulo</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="panel table-panel">
-          <div class="section-head">
-            <h2>Prévia</h2>
-            <div class="section-tools">
-              <label class="search-field" title="Filtrar alunos na prévia">
-                <i data-lucide="search"></i>
-                <input id="previewSearchInput" type="search" placeholder="Filtrar prévia">
-              </label>
-              <button type="button" class="btn secondary small" id="downloadSessionPdfBtn" disabled title="Exportar aula selecionada em PDF">
-                <i data-lucide="file-down"></i>
-                <span>PDF aula</span>
-              </button>
-            </div>
-          </div>
-          <div class="table-wrap compact-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Status</th>
-                  <th>Nome</th>
-                  <th>Observação</th>
-                </tr>
-              </thead>
-              <tbody id="previewTbody">
-                <tr><td colspan="4" class="empty-state">Sem sessão</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </section>
-
-      <section class="panel table-panel">
-        <div class="section-head">
-          <h2>Avisos</h2>
-        </div>
-        <div id="warningsBox" class="warnings-box">Nenhum aviso</div>
-      </section>
-    </section>
-  </main>
+    </main>
+  </div>
 </body>
 </html>

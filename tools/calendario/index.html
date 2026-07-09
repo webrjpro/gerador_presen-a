@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Carlos Antonio de Oliveira Piquet">
+  <title>Sistema de Calendário</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img class="brand-mark" id="brandLogo" src="./assets/logo-calendario.png" alt="Logo do Sistema de Calendário">
+        <div>
+          <h1>Sistema de Calendário</h1>
+          <p id="sourceStatus">Aguardando planilha</p>
+        </div>
+      </div>
+
+      <div class="toolbar" aria-label="Ações principais">
+        <button class="button button-primary" id="exportPdfBtn" type="button">
+          <i data-lucide="file-down" aria-hidden="true"></i>
+          Exportar PDF
+        </button>
+        <button class="button" id="exportTablePdfBtn" type="button">
+          <i data-lucide="file-spreadsheet" aria-hidden="true"></i>
+          Só tabela
+        </button>
+        <button class="button" id="printBtn" type="button" title="Imprimir">
+          <i data-lucide="printer" aria-hidden="true"></i>
+          Imprimir
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="control-band" aria-labelledby="controlsTitle">
+        <div>
+          <h2 id="controlsTitle">Importação e edição</h2>
+          <div class="compact-grid">
+            <label>
+              Título
+              <input id="scheduleTitle" type="text" autocomplete="off">
+            </label>
+            <label>
+              Dia esperado
+              <select id="expectedWeekday">
+                <option value="">Livre</option>
+                <option value="1">Segunda-feira</option>
+                <option value="2">Terça-feira</option>
+                <option value="3">Quarta-feira</option>
+                <option value="4">Quinta-feira</option>
+                <option value="5">Sexta-feira</option>
+                <option value="6">Sábado</option>
+                <option value="0">Domingo</option>
+              </select>
+            </label>
+            <label>
+              Arquivo
+              <input id="excelFile" type="file" accept=".xlsx,.xls,.csv">
+            </label>
+          </div>
+        </div>
+
+        <div class="local-calendar">
+          <label>
+            Localidade
+            <input type="text" value="Rio de Janeiro/RJ" readonly>
+          </label>
+          <label>
+            Data de ponto facultativo
+            <input id="customHolidayDate" type="date">
+          </label>
+          <label>
+            Descrição
+            <input id="customHolidayName" type="text" value="Ponto facultativo RJ" autocomplete="off">
+          </label>
+          <button class="button" id="addCustomHolidayBtn" type="button">
+            <i data-lucide="calendar-plus" aria-hidden="true"></i>
+            Adicionar
+          </button>
+          <div id="customHolidayList" class="custom-holiday-list"></div>
+        </div>
+
+        <div class="branding-settings">
+          <div class="branding-intro">
+            <h2>Cabeçalho do PDF</h2>
+            <p>Logo institucional opcional e texto impresso abaixo do logo.</p>
+          </div>
+          <div class="branding-fields">
+            <label>
+              Logo da instituição
+              <input id="institutionLogoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/*">
+            </label>
+            <label>
+              Texto abaixo do logo
+              <input id="institutionLogoCaption" type="text" autocomplete="off" maxlength="110">
+            </label>
+            <label class="inline-check">
+              <input id="includeLogoInPdf" type="checkbox">
+              Incluir logo no PDF
+            </label>
+          </div>
+          <div class="logo-options">
+            <label class="inline-check logo-default-check">
+              <input id="useDefaultLogo" type="checkbox">
+              Usar logo padrão
+            </label>
+            <div class="logo-preview">
+              <img id="pdfLogoPreview" src="./assets/logo-calendario.png" alt="Logo usado no PDF">
+              <span id="pdfLogoName">Logo padrão</span>
+            </div>
+          </div>
+          <div class="color-settings">
+            <div class="palette-group">
+              <span>Faixa do título</span>
+              <input id="pdfTitleColor" type="color" value="#fff200" aria-label="Cor da faixa do título no PDF">
+              <div class="swatches" data-target="pdfTitleColor">
+                <button class="color-swatch" type="button" data-color="#fff200" style="--swatch:#fff200" title="Amarelo"></button>
+                <button class="color-swatch" type="button" data-color="#f4c542" style="--swatch:#f4c542" title="Ouro"></button>
+                <button class="color-swatch" type="button" data-color="#d7e8ff" style="--swatch:#d7e8ff" title="Azul claro"></button>
+                <button class="color-swatch" type="button" data-color="#174b82" style="--swatch:#174b82" title="Azul institucional"></button>
+                <button class="color-swatch" type="button" data-color="#ffffff" style="--swatch:#ffffff" title="Branco"></button>
+              </div>
+            </div>
+            <div class="palette-group">
+              <span>Cabeçalho da tabela</span>
+              <input id="pdfTableHeaderColor" type="color" value="#b7c7e4" aria-label="Cor do cabeçalho da tabela">
+              <div class="swatches" data-target="pdfTableHeaderColor">
+                <button class="color-swatch" type="button" data-color="#b7c7e4" style="--swatch:#b7c7e4" title="Azul planilha"></button>
+                <button class="color-swatch" type="button" data-color="#d7e8ff" style="--swatch:#d7e8ff" title="Azul claro"></button>
+                <button class="color-swatch" type="button" data-color="#c7d7c9" style="--swatch:#c7d7c9" title="Verde discreto"></button>
+                <button class="color-swatch" type="button" data-color="#ead7b7" style="--swatch:#ead7b7" title="Dourado discreto"></button>
+                <button class="color-swatch" type="button" data-color="#174b82" style="--swatch:#174b82" title="Azul escuro"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dropZone" class="drop-zone" tabindex="0" role="button" aria-label="Selecionar ou arrastar arquivo Excel">
+          <i data-lucide="sheet" aria-hidden="true"></i>
+          <strong>Clique ou solte o Excel aqui</strong>
+          <span>abre o seletor de arquivo ou aceita arrastar e soltar</span>
+        </div>
+
+        <div class="actions-row">
+          <button class="button" id="loadDefaultBtn" type="button">
+            <i data-lucide="folder-open" aria-hidden="true"></i>
+            Carregar calendario.xlsx
+          </button>
+          <button class="button" id="manualBtn" type="button">
+            <i data-lucide="table-2" aria-hidden="true"></i>
+            Nova tabela manual
+          </button>
+          <button class="button" id="addRowBtn" type="button">
+            <i data-lucide="plus" aria-hidden="true"></i>
+            Módulo
+          </button>
+          <button class="button" id="refreshHolidaysBtn" type="button">
+            <i data-lucide="calendar-sync" aria-hidden="true"></i>
+            Atualizar feriados
+          </button>
+          <button class="button button-danger" id="resetSystemBtn" type="button">
+            <i data-lucide="eraser" aria-hidden="true"></i>
+            Resetar
+          </button>
+        </div>
+      </section>
+
+      <section class="status-band" aria-live="polite">
+        <div>
+          <span class="metric-label">Módulos</span>
+          <strong id="moduleCount">0</strong>
+        </div>
+        <div>
+          <span class="metric-label">Carga horária</span>
+          <strong id="workloadTotal">0h</strong>
+        </div>
+        <div>
+          <span class="metric-label">Período</span>
+          <strong id="dateRange">-</strong>
+        </div>
+        <div>
+          <span class="metric-label">Calendário</span>
+          <strong id="holidayStatus">Cache local</strong>
+        </div>
+      </section>
+
+      <section class="alert-band" aria-labelledby="alertsTitle">
+        <div class="section-heading">
+          <h2 id="alertsTitle">Alertas de calendário</h2>
+          <span id="alertSummary" class="pill">Sem dados</span>
+        </div>
+        <div id="alertsList" class="alerts-list"></div>
+      </section>
+
+      <section class="table-band" aria-labelledby="tableTitle">
+        <div class="section-heading">
+          <h2 id="tableTitle">Preview editável</h2>
+          <span class="pill" id="autosaveStatus">Edições locais</span>
+        </div>
+        <div class="table-scroll-shell">
+          <button class="table-scroll-button table-scroll-left" id="scrollTableLeftBtn" type="button" aria-label="Rolar tabela para a esquerda" hidden>
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </button>
+          <button class="table-scroll-button table-scroll-right" id="scrollTableRightBtn" type="button" aria-label="Rolar tabela para a direita" hidden>
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </button>
+          <div class="table-wrap" id="tableWrap">
+            <table id="modulesTable">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span id="ownerCredit">Desenvolvido e licenciado por Carlos Antonio de Oliveira Piquet · carlos.piquet2016@gmail.com</span>
+      <button class="link-button" id="openTermsFooterBtn" type="button">Termos e licença</button>
+    </footer>
+  </div>
+
+  <dialog class="terms-dialog" id="termsDialog">
+    <div class="terms-panel">
+      <div class="section-heading">
+        <h2>Termos e licença</h2>
+        <button class="icon-button" id="closeTermsBtn" type="button" title="Fechar">
+          <i data-lucide="x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="terms-content">
+        <p><strong>Sistema de Calendário</strong></p>
+        <p>Autor e titular: Carlos Antonio de Oliveira Piquet · carlos.piquet2016@gmail.com</p>
+        <p>Licença proprietária. O uso, cópia, adaptação, distribuição, hospedagem, revenda ou sublicenciamento deste sistema dependem de autorização expressa do titular.</p>
+        <p>Os dados importados pelo usuário ficam no próprio navegador durante o uso. Logos institucionais e pontos facultativos cadastrados são salvos localmente no navegador para conveniência operacional.</p>
+        <p>O calendário de feriados combina API pública, regras locais do Rio de Janeiro/RJ e pontos facultativos informados pelo usuário. A validação serve como apoio operacional e deve ser conferida contra atos oficiais quando houver impacto administrativo.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>
