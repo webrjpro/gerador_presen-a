@@ -4,27 +4,18 @@
   const tools = {
     presenca: {
       title: "Presença Moodle",
-      group: "Lançamento de frequência",
       src: "presenca.html",
       status: "Gerador de CSV, ZIP e PDF para Moodle",
-      mode: "Planilha de presença",
-      privacy: "Exportação local",
     },
     calendario: {
       title: "Calendário",
-      group: "Planejamento acadêmico",
       src: "tools/calendario/index.html",
       status: "Calendário acadêmico e exportação PDF",
-      mode: "Tabela editável",
-      privacy: "Rascunho local",
     },
     organizador: {
       title: "Organizador",
-      group: "Arquivos e conversores",
       src: "organizadorzip_compactador-main/index.html",
       status: "Organizador de alunos, CSV Moodle e relatorios",
-      mode: "Suite de arquivos",
-      privacy: "Processamento local",
     },
   };
 
@@ -43,15 +34,15 @@
   function cacheDom() {
     [
       "suiteStatus",
+      "menuToggleBtn",
+      "menuCloseBtn",
+      "drawerBackdrop",
+      "toolDrawer",
       "reloadToolBtn",
       "openToolBtn",
       "toolSearchInput",
       "toolNav",
       "toolEmpty",
-      "activeToolGroup",
-      "activeToolTitle",
-      "activeToolMode",
-      "activeToolPrivacy",
       "toolFrame",
     ].forEach((id) => {
       dom[id] = document.getElementById(id);
@@ -60,9 +51,15 @@
 
   function bindEvents() {
     dom.toolNav.querySelectorAll("[data-tool]").forEach((button) => {
-      button.addEventListener("click", () => activateTool(button.dataset.tool));
+      button.addEventListener("click", () => {
+        activateTool(button.dataset.tool);
+        closeToolMenu();
+      });
     });
 
+    dom.menuToggleBtn.addEventListener("click", toggleToolMenu);
+    dom.menuCloseBtn.addEventListener("click", closeToolMenu);
+    dom.drawerBackdrop.addEventListener("click", closeToolMenu);
     dom.toolSearchInput.addEventListener("input", filterTools);
     dom.reloadToolBtn.addEventListener("click", reloadActiveTool);
     dom.openToolBtn.addEventListener("click", openActiveTool);
@@ -73,6 +70,11 @@
 
     window.addEventListener("hashchange", () => activateTool(getToolFromHash(), { replaceHash: true }));
     window.addEventListener("popstate", () => activateTool(getToolFromHash(), { replaceHash: true, skipTransition: true }));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeToolMenu();
+      }
+    });
   }
 
   function getToolFromHash() {
@@ -102,10 +104,6 @@
       button.toggleAttribute("aria-current", active);
     });
 
-    dom.activeToolTitle.textContent = tool.title;
-    dom.activeToolGroup.textContent = tool.group;
-    dom.activeToolMode.textContent = tool.mode;
-    dom.activeToolPrivacy.textContent = tool.privacy;
     dom.suiteStatus.textContent = tool.status;
 
     if (dom.toolFrame.getAttribute("src") !== tool.src) {
@@ -127,6 +125,32 @@
     }
 
     history.pushState(null, "", nextHash);
+  }
+
+  function toggleToolMenu() {
+    setToolMenu(!document.body.classList.contains("menu-open"));
+  }
+
+  function closeToolMenu() {
+    setToolMenu(false);
+  }
+
+  function setToolMenu(open) {
+    document.body.classList.toggle("menu-open", open);
+    dom.menuToggleBtn.setAttribute("aria-expanded", String(open));
+    dom.menuToggleBtn.setAttribute("aria-label", open ? "Fechar menu de ferramentas" : "Abrir menu de ferramentas");
+    dom.toolDrawer.setAttribute("aria-hidden", String(!open));
+    dom.toolDrawer.inert = !open;
+    dom.drawerBackdrop.hidden = !open;
+
+    if (open) {
+      window.setTimeout(() => dom.toolSearchInput.focus(), 120);
+      return;
+    }
+
+    if (dom.toolDrawer.contains(document.activeElement)) {
+      dom.menuToggleBtn.focus();
+    }
   }
 
   function filterTools() {

@@ -5,18 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Carlos Antonio de Oliveira Piquet">
   <title>Suite Acadêmica Piquet</title>
-  <link rel="stylesheet" href="suite.css?v=20260709-suite">
+  <link rel="stylesheet" href="suite.css?v=20260709-office-menu2">
   <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script defer src="suite.js?v=20260709-suite"></script>
+  <script defer src="suite.js?v=20260709-office-menu2"></script>
 </head>
 <body>
   <div class="suite-shell">
     <header class="suite-topbar">
-      <div class="suite-brand">
-        <div class="brand-mark" aria-hidden="true">SP</div>
-        <div>
-          <h1>Suite Acadêmica Piquet</h1>
-          <p id="suiteStatus">Presença Moodle carregada</p>
+      <div class="suite-topbar-main">
+        <button type="button" class="suite-icon-btn menu-toggle" id="menuToggleBtn" aria-label="Abrir menu de ferramentas" aria-controls="toolDrawer" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="suite-brand">
+          <div class="brand-mark" aria-hidden="true">SP</div>
+          <div>
+            <h1>Suite Acadêmica Piquet</h1>
+            <p id="suiteStatus">Presença Moodle carregada</p>
+          </div>
         </div>
       </div>
       <div class="suite-actions">
@@ -32,7 +37,16 @@
     </header>
 
     <main class="suite-layout">
-      <aside class="suite-sidebar" aria-label="Ferramentas">
+      <button type="button" class="drawer-backdrop" id="drawerBackdrop" aria-label="Fechar menu de ferramentas" hidden></button>
+
+      <aside class="suite-sidebar" id="toolDrawer" aria-label="Ferramentas" aria-hidden="true" inert>
+        <div class="drawer-head">
+          <strong>Ferramentas</strong>
+          <button type="button" class="suite-icon-btn" id="menuCloseBtn" aria-label="Fechar menu de ferramentas">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+
         <label class="tool-search">
           <i data-lucide="search"></i>
           <input id="toolSearchInput" type="search" placeholder="Buscar ferramenta">
@@ -59,17 +73,6 @@
       </aside>
 
       <section class="tool-stage">
-        <div class="stage-head">
-          <div>
-            <span class="stage-kicker" id="activeToolGroup">Operação acadêmica</span>
-            <h2 id="activeToolTitle">Presença Moodle</h2>
-          </div>
-          <div class="stage-pills" aria-label="Resumo da ferramenta ativa">
-            <span id="activeToolMode">Ferramenta local</span>
-            <span id="activeToolPrivacy">Dados no navegador</span>
-          </div>
-        </div>
-
         <div class="frame-shell">
           <iframe id="toolFrame" title="Ferramenta ativa" src="presenca.html" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
         </div>

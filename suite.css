@@ -57,7 +57,7 @@ input {
 .suite-topbar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
   display: flex;
   min-height: var(--topbar-height);
   align-items: center;
@@ -79,6 +79,13 @@ input {
   content: "";
 }
 
+.suite-topbar-main {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
 .suite-brand {
   display: flex;
   min-width: 0;
@@ -97,8 +104,7 @@ input {
   font-weight: 900;
 }
 
-.suite-brand h1,
-.stage-head h2 {
+.suite-brand h1 {
   margin: 0;
   letter-spacing: 0;
 }
@@ -111,6 +117,30 @@ input {
   margin: 2px 0 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.suite-icon-btn {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c8d4df;
+  border-radius: 7px;
+  background: #fff;
+  color: var(--blue);
+  cursor: pointer;
+}
+
+.suite-icon-btn:hover {
+  border-color: rgba(11, 93, 143, 0.45);
+  background: #eef5fa;
+}
+
+.suite-icon-btn svg {
+  width: 19px;
+  height: 19px;
 }
 
 .suite-actions {
@@ -161,9 +191,7 @@ input {
 }
 
 .suite-layout {
-  display: grid;
-  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-  gap: 12px;
+  display: block;
   min-height: 0;
   padding: var(--workspace-pad);
 }
@@ -179,9 +207,49 @@ input {
 
 .suite-sidebar {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 12px;
+  position: fixed;
+  top: calc(var(--topbar-height) + 12px);
+  bottom: 12px;
+  left: 12px;
+  z-index: 35;
+  width: min(var(--sidebar-width), calc(100vw - 24px));
   padding: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(-100% - 28px));
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+body.menu-open .suite-sidebar {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.drawer-backdrop {
+  position: fixed;
+  inset: var(--topbar-height) 0 0;
+  z-index: 30;
+  border: 0;
+  background: rgba(20, 32, 51, 0.34);
+  cursor: default;
+}
+
+.drawer-head {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.drawer-head strong {
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .tool-search {
@@ -272,51 +340,9 @@ input {
 }
 
 .tool-stage {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  display: block;
   overflow: hidden;
   view-transition-name: tool-stage;
-}
-
-.stage-head {
-  display: flex;
-  min-height: 58px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  border-bottom: 1px solid var(--line);
-  padding: 12px 14px;
-}
-
-.stage-kicker {
-  display: block;
-  color: var(--green);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.stage-head h2 {
-  margin-top: 2px;
-  font-size: 18px;
-}
-
-.stage-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.stage-pills span {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--panel-soft);
-  color: var(--muted);
-  padding: 6px 9px;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .frame-shell {
@@ -329,7 +355,7 @@ iframe {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - var(--topbar-height) - 82px);
+  min-height: calc(100vh - var(--topbar-height) - 28px);
   border: 0;
   background: #fff;
 }
@@ -367,7 +393,6 @@ iframe {
   }
 
   .suite-brand p,
-  .stage-pills span,
   .tool-item small {
     font-size: 12px;
   }
@@ -386,10 +411,6 @@ iframe {
     padding: 9px;
   }
 
-  .stage-head {
-    min-height: 52px;
-    padding: 9px 12px;
-  }
 }
 
 /* Desktop padrao: 1440x900 */
@@ -399,49 +420,34 @@ iframe {
   }
 }
 
-/* Tablet / notebook pequeno */
-@media (max-width: 1024px) {
-  .suite-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .suite-sidebar {
-    min-height: auto;
-  }
-
-  .tool-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  iframe {
-    min-height: calc(100vh - 260px);
-  }
-}
-
 /* Celular grande */
 @media (max-width: 768px) {
-  .suite-topbar,
-  .stage-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .suite-layout {
     padding: 10px;
   }
 
-  .suite-actions,
-  .suite-btn,
-  .stage-pills {
-    width: 100%;
+  .suite-actions {
+    flex: 0 0 auto;
   }
 
-  .tool-nav {
-    grid-template-columns: 1fr;
+  .suite-btn {
+    width: 38px;
+    padding: 8px;
+  }
+
+  .suite-btn span {
+    display: none;
+  }
+
+  .suite-sidebar {
+    top: calc(var(--topbar-height) + 10px);
+    bottom: 10px;
+    left: 10px;
+    width: calc(100vw - 20px);
   }
 
   iframe {
-    min-height: calc(100vh - 360px);
+    min-height: calc(100vh - var(--topbar-height) - 24px);
   }
 }
 
