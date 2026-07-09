@@ -34,30 +34,6 @@
       mode: "PDF e QR",
       privacy: "Sem envio externo",
     },
-    "qr-mescla": {
-      title: "Mescla QR",
-      group: "Documentos em lote",
-      src: "organizadorzip_compactador-main/extrator_qr/mescla_qrcode_v1.html",
-      status: "Variação do fluxo de QR Code em PDF",
-      mode: "Mescla em lote",
-      privacy: "Sem envio externo",
-    },
-    escala: {
-      title: "Escala e RH",
-      group: "Gestão operacional",
-      src: "organizadorzip_compactador-main/escala_presença.html",
-      status: "Escalas, frequência e relatórios internos",
-      mode: "Escala mensal",
-      privacy: "Dados locais",
-    },
-    agenda: {
-      title: "Agenda",
-      group: "Compromissos",
-      src: "organizadorzip_compactador-main/agenda.html",
-      status: "Agenda unificada de eventos",
-      mode: "Calendário local",
-      privacy: "IndexedDB/localStorage",
-    },
   };
 
   const dom = {};
