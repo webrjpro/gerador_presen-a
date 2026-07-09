@@ -12,6 +12,9 @@
   --amber: #a56a12;
   --focus: #70b7e6;
   --shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
+  --app-pad: 18px;
+  --app-gap: 18px;
+  --controls-width: 340px;
 }
 
 * {
@@ -74,9 +77,9 @@ select {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 340px minmax(0, 1fr);
-  gap: 18px;
-  padding: 18px;
+  grid-template-columns: var(--controls-width) minmax(0, 1fr);
+  gap: var(--app-gap);
+  padding: var(--app-pad);
 }
 
 .panel {
@@ -517,8 +520,8 @@ tbody tr:hover td {
 
 .split {
   display: grid;
-  grid-template-columns: minmax(420px, 0.9fr) minmax(420px, 1.1fr);
-  gap: 18px;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(360px, 1.1fr);
+  gap: var(--app-gap);
   min-width: 0;
 }
 
@@ -573,7 +576,61 @@ tbody tr:hover td {
   background: #fff9e8;
 }
 
-@media (max-width: 1180px) {
+/* Notebook comum: 1366x768 e iframe da suite */
+@media (max-width: 1366px) {
+  :root {
+    --app-pad: 12px;
+    --app-gap: 12px;
+    --controls-width: 300px;
+  }
+
+  .topbar {
+    min-height: 58px;
+    padding: 8px 14px;
+  }
+
+  .topbar h1 {
+    font-size: 18px;
+  }
+
+  .control-section {
+    padding: 12px;
+  }
+
+  .controls {
+    top: 70px;
+    max-height: calc(100vh - 82px);
+  }
+
+  .metrics {
+    grid-template-columns: repeat(4, minmax(110px, 1fr));
+  }
+
+  .metric {
+    min-height: 62px;
+    padding: 10px;
+  }
+
+  .metric strong {
+    font-size: 22px;
+  }
+
+  th,
+  td {
+    padding: 8px 9px;
+  }
+
+  .table-wrap {
+    max-height: 300px;
+  }
+
+  .compact-table {
+    max-height: 360px;
+  }
+}
+
+/* Tablet / notebook pequeno */
+@media (max-width: 1024px) {
   .app-shell,
   .split {
     grid-template-columns: 1fr;
@@ -595,7 +652,8 @@ tbody tr:hover td {
   }
 }
 
-@media (max-width: 720px) {
+/* Celular grande */
+@media (max-width: 768px) {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
@@ -635,5 +693,45 @@ tbody tr:hover td {
 
   .status-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Celular pequeno */
+@media (max-width: 480px) {
+  .top-actions,
+  .file-actions {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .metrics,
+  .command-stats,
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  th,
+  td {
+    padding: 7px 8px;
+  }
+}
+
+/* Monitor grande */
+@media (min-width: 1600px) {
+  :root {
+    --app-pad: 22px;
+    --app-gap: 22px;
+    --controls-width: 360px;
+  }
+
+  .table-wrap {
+    max-height: 420px;
+  }
+
+  .compact-table {
+    max-height: 520px;
   }
 }

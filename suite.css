@@ -11,6 +11,9 @@
   --amber: #a56612;
   --red: #b33b32;
   --shadow: 0 8px 22px rgba(20, 32, 51, 0.08);
+  --topbar-height: 62px;
+  --workspace-pad: 12px;
+  --sidebar-width: 270px;
 }
 
 @view-transition {
@@ -56,7 +59,7 @@ input {
   top: 0;
   z-index: 20;
   display: flex;
-  min-height: 62px;
+  min-height: var(--topbar-height);
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -159,10 +162,10 @@ input {
 
 .suite-layout {
   display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
   gap: 12px;
   min-height: 0;
-  padding: 12px;
+  padding: var(--workspace-pad);
 }
 
 .suite-sidebar,
@@ -326,7 +329,7 @@ iframe {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 144px);
+  min-height: calc(100vh - var(--topbar-height) - 82px);
   border: 0;
   background: #fff;
 }
@@ -342,7 +345,62 @@ iframe {
   }
 }
 
-@media (max-width: 1080px) {
+/* Notebook comum: 1366x768 */
+@media (max-width: 1366px) {
+  :root {
+    --topbar-height: 58px;
+    --workspace-pad: 10px;
+    --sidebar-width: 238px;
+  }
+
+  .suite-topbar {
+    padding: 8px 12px;
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .suite-brand h1 {
+    font-size: 17px;
+  }
+
+  .suite-brand p,
+  .stage-pills span,
+  .tool-item small {
+    font-size: 12px;
+  }
+
+  .suite-btn {
+    min-height: 34px;
+    padding: 6px 10px;
+  }
+
+  .suite-sidebar {
+    padding: 10px;
+  }
+
+  .tool-item {
+    min-height: 52px;
+    padding: 9px;
+  }
+
+  .stage-head {
+    min-height: 52px;
+    padding: 9px 12px;
+  }
+}
+
+/* Desktop padrao: 1440x900 */
+@media (min-width: 1367px) and (max-width: 1440px) {
+  :root {
+    --sidebar-width: 258px;
+  }
+}
+
+/* Tablet / notebook pequeno */
+@media (max-width: 1024px) {
   .suite-layout {
     grid-template-columns: 1fr;
   }
@@ -354,9 +412,14 @@ iframe {
   .tool-nav {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  iframe {
+    min-height: calc(100vh - 260px);
+  }
 }
 
-@media (max-width: 720px) {
+/* Celular grande */
+@media (max-width: 768px) {
   .suite-topbar,
   .stage-head {
     align-items: flex-start;
@@ -379,5 +442,46 @@ iframe {
 
   iframe {
     min-height: calc(100vh - 360px);
+  }
+}
+
+/* Celular pequeno */
+@media (max-width: 480px) {
+  .suite-layout {
+    padding: 8px;
+  }
+
+  .suite-brand {
+    gap: 9px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .suite-brand h1 {
+    font-size: 16px;
+  }
+
+  .tool-search,
+  .suite-btn {
+    min-height: 36px;
+  }
+}
+
+/* Monitor grande */
+@media (min-width: 1600px) {
+  :root {
+    --sidebar-width: 300px;
+    --workspace-pad: 16px;
+  }
+
+  .suite-layout {
+    gap: 16px;
+  }
+
+  .tool-item {
+    min-height: 62px;
   }
 }

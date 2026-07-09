@@ -51,6 +51,19 @@ Essa abordagem evita colisão de IDs globais, CSS global, `localStorage`, evento
 - Dependências de terceiros ficam dentro das ferramentas que já as usam.
 - Arquivos pesados de build/instalador ficam fora do repositório web.
 
+## Responsividade
+
+A suíte foi ajustada para os viewports mais importantes em notebook e desktop:
+
+- `max-width: 480px`: celular pequeno.
+- `max-width: 768px`: celular grande.
+- `max-width: 1024px`: tablet/notebook pequeno.
+- `max-width: 1366px`: notebook comum, incluindo 1366x768.
+- `max-width: 1440px`: desktop/notebook 1440x900.
+- `min-width: 1600px`: monitores grandes.
+
+O shell reduz a largura da navegação lateral em 1366px para preservar largura útil do iframe. O gerador de presença também reduz espaçamentos, largura do painel de controles e alturas de tabela para funcionar melhor dentro da suíte em 1366x768.
+
 ## Referências pesquisadas
 
 - MDN View Transition API: https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API
