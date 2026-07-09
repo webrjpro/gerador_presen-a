@@ -132,7 +132,6 @@ const ActionBus = {
         'section-csv',
         'section-report',
         'section-zipador-web',
-        'section-extrator-qr',
     ],
 
     _handlers: {
@@ -145,24 +144,12 @@ const ActionBus = {
             }
             UI.toast('Módulo Zipador Web indisponível no momento.', 'error');
         },
-        'open-extrator-qr': () => {
-            const targetId = 'section-extrator-qr';
-            if (!document.getElementById(targetId)) {
-                UI.toast('Módulo Extrator QR indisponível no momento.', 'error');
-                return;
-            }
-            ActionBus._showOnlySection(targetId);
-        },
         'zipador-back-upload': () => {
             if (window.ZipadorWebApp && typeof window.ZipadorWebApp.backToUpload === 'function') {
                 window.ZipadorWebApp.backToUpload();
                 return;
             }
             document.getElementById('section-zipador-web')?.classList.add('hidden-section');
-            UI.showSection(DOM.sectionUpload);
-        },
-        'extrator-back-upload': () => {
-            ActionBus._hideSections(['section-extrator-qr']);
             UI.showSection(DOM.sectionUpload);
         },
         'close-modal':      () => Categories.closeModal(),
@@ -1258,5 +1245,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 

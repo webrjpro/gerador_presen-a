@@ -26,14 +26,6 @@
       mode: "Suite de arquivos",
       privacy: "Processamento local",
     },
-    qr: {
-      title: "QR em PDF",
-      group: "Documentos em lote",
-      src: "organizadorzip_compactador-main/extrator_qr/index.html",
-      status: "Inserção, extração e lote de QR em PDF",
-      mode: "PDF e QR",
-      privacy: "Sem envio externo",
-    },
   };
 
   const dom = {};

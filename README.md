@@ -9,9 +9,6 @@ Abra `index.html` por um servidor local. A tela principal carrega as ferramentas
 - Presenca Moodle: geracao de CSV, ZIP e PDFs de aula/modulo.
 - Calendario: planejamento academico, feriados, tabela editavel e PDF.
 - Organizador: organizador de documentos, conversor Moodle CSV e relatorio de logs.
-- QR em PDF: insercao/extracao de QR Code em PDFs e processamento em lote.
-- Escala e RH: escala mensal, frequencia e relatorios internos.
-- Agenda: agenda local de eventos.
 
 ## Execucao local
 

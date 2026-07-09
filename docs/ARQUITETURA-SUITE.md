@@ -11,10 +11,6 @@ A suíte usa um shell leve (`index.html`, `suite.css`, `suite.js`) e carrega fer
 - `presenca.html`: geração de CSV/ZIP/PDF para presença Moodle.
 - `tools/calendario/index.html`: calendário acadêmico com feriados, edição e PDF.
 - `organizadorzip_compactador-main/index.html`: organizador/conversor/relatórios.
-- `organizadorzip_compactador-main/extrator_qr/index.html`: QR em PDF.
-- `organizadorzip_compactador-main/extrator_qr/mescla_qrcode_v1.html`: variação de mescla QR.
-- `organizadorzip_compactador-main/escala_presença.html`: escala e RH.
-- `organizadorzip_compactador-main/agenda.html`: agenda local.
 
 Essa abordagem evita colisão de IDs globais, CSS global, `localStorage`, eventos e bibliotecas duplicadas entre sistemas legados.
 
@@ -70,8 +66,6 @@ O shell reduz a largura da navegação lateral em 1366px para preservar largura 
 - MDN CSS scroll-driven animations: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations
 - web.dev View Transitions for SPA: https://web.dev/learn/css/view-transitions-spas
 - Chrome cross-document View Transitions: https://developer.chrome.com/docs/web-platform/view-transitions/cross-document
-- jsQR no GitHub: https://github.com/cozmo/jsQR
-- Mozilla PDF.js no GitHub: https://github.com/mozilla/pdf.js/
 - Awesome JavaScript: https://github.com/sorrycc/awesome-javascript
 
 ## Próximos cortes técnicos recomendados
