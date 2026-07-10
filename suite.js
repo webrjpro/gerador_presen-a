@@ -17,6 +17,11 @@
       src: "organizadorzip_compactador-main/index.html",
       status: "Organizador de alunos, CSV Moodle e relatorios",
     },
+    matrixpro: {
+      title: "MatrixPro RH",
+      src: "Matrixpro-main/index.html",
+      status: "MatrixPro RH carregado",
+    },
   };
 
   const dom = {};

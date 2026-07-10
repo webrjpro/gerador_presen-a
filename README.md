@@ -9,6 +9,7 @@ Abra `index.html` por um servidor local. A tela principal carrega as ferramentas
 - Presenca Moodle: geracao de CSV, ZIP e PDFs de aula/modulo.
 - Calendario: planejamento academico, feriados, tabela editavel e PDF.
 - Organizador: organizador de documentos, conversor Moodle CSV e relatorio de logs.
+- MatrixPro RH: gestao de RH, escalas, presencas, ferias, documentos e relatorios.
 
 ## Execucao local
 

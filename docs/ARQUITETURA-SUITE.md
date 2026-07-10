@@ -11,6 +11,7 @@ A suíte usa um shell leve (`index.html`, `suite.css`, `suite.js`) e carrega fer
 - `presenca.html`: geração de CSV/ZIP/PDF para presença Moodle.
 - `tools/calendario/index.html`: calendário acadêmico com feriados, edição e PDF.
 - `organizadorzip_compactador-main/index.html`: organizador/conversor/relatórios.
+- `Matrixpro-main/index.html`: MatrixPro RH, escalas, presenças e relatórios operacionais.
 
 Essa abordagem evita colisão de IDs globais, CSS global, `localStorage`, eventos e bibliotecas duplicadas entre sistemas legados.
 
